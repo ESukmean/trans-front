@@ -32,8 +32,8 @@
 						<tbody>
 							{#each list as item}
 								<tr class="hover:bg-slate-100">
-									<td><a href="/{item.id}" class="py-1.5 block">{item.title}</a></td>
-									<td><a href="/{item.id}/{item.chapter_id}" class="block">{item.latest_chapter}</a></td>
+									<td><a href="/{item.id}/" class="py-1.5 block">{item.title}</a></td>
+									<td><a href="/{item.id}/{item.chapter_id}/" class="block">{item.latest_chapter}</a></td>
 									<td>{item.modified}</td>
 								</tr>
 							{/each}
