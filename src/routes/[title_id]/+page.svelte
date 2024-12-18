@@ -1,9 +1,10 @@
 <script>
 	import Frame from '$lib/Frame.svelte';
 
-    let order = $state('old');
-	const { data } = $props();
-
+    const { data } = $props();
+    const avail_order = ['old', 'latest', 'a-z', 'z-a'];
+    let order = $state(data.order && avail_order.includes(data.order) ? data.order : 'old');
+    
     function order_func(a, b) {
         // if (Math.random() < 0.5) return -1
         // return 1;
@@ -68,7 +69,7 @@
 						<tbody>
 							{#each list as item}
 								<tr class="hover:bg-slate-100">
-									<td><a href="/{item.id}" class="py-1.5 block">{item.chapter_name}</a></td>
+									<td><a href="/{item.title_id}/{item.chapter_id}/" class="py-1.5 block">{item.chapter_name}</a></td>
 									<td>{item.modified}</td>
 								</tr>
 							{/each}
