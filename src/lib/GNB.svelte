@@ -1,25 +1,10 @@
-<header class="bg-slate-100">
-	<nav
-		class="mx-auto flex max-w-7xl items-center justify-between p-4 text-xl lg:px-8"
-		aria-label="Global"
-	>
-		<div class="flex-1">
-			<h1 class="text-4xl font-bold">Krnis SAM</h1>
-		</div>
-		<div class="flex-1">
-			<ul class="flex">
-				<li class="w-28 flex-initial hover:font-bold">
-					<a href="/" class="block p-2 text-center">대시 보드</a>
-				</li>
-				<li class="w-28 flex-initial hover:font-bold">
-					<a href="/" class="block p-2 text-center">회원 관리</a>
-				</li>
-			</ul>
-		</div>
-		<div class="flex flex-1 flex-row-reverse">
-			<div class="w-28 flex-initial">
-				<a href="/" class="block p-2 text-center align-middle text-2xl">🫅</a>
-			</div>
-		</div>
-	</nav>
-</header>
+<div class="h-12 bg-emerald-600">
+    <div class="container mx-auto text-white flex">
+        <div class="flex-1">
+            <a href="/" class="text-2xl py-1.5 px-2 font-bold inline-block">GPTTrans</a>
+        </div>
+        <div class="flex-1 flex flex-row-reverse">
+            <!-- <a href="/" class="text-lg py-2.5 px-2 inline-block text-slate-200" title="폰트 설정 등등">⛏️ 리더 설정</a> -->
+        </div>
+    </div>
+</div>

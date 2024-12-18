@@ -1,3 +1,3 @@
-export function load(event) {
-
+export function load({ data }) {
+    return data
 }

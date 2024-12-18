@@ -1,9 +1,7 @@
 <script>
-	import GNB from './GNB.svelte';
-	import Footer from './Footer.svelte';
+	import GNB from './GNB.svelte'
 	const { children } = $props();
 </script>
 
-<GNB></GNB>
+<GNB />
 {@render children()}
-<Footer></Footer>
