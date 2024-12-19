@@ -55,6 +55,12 @@
                         <label class="block"><input type="checkbox" /> 문장 단위 스크롤 버튼</label>
                         <label class="block"><input type="checkbox" /> 다음 챕터 이어보기</label>
                     </div>
+                    <div class="mt-4 font-bold">보기</div>
+                    <div class="p-2">
+                        <label class="block"><input type="checkbox" /> 와이드로 보기</label>
+                        <label class="block">폰트 크기 (px): <input type="number" min=1 max=128 step=0.1 value="12.5"/> </label>
+                        <label class="block">줄 간격 (rem): <input type="number" min=0.1 max=30 step=0.01 value="1.4"/> </label>
+                    </div>
                 </div>
             </div>
 			<div class="lg:flex-1 lg:h-full">
