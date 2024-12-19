@@ -17,7 +17,7 @@
 <Frame>
 	<div class="container mx-auto p-2">
 		<div class="lg:flex gap-4">
-			<div class="w-80 lg:h-full lg:mt-16">
+			<div class="w-full lg:w-80 lg:h-full lg:mt-16 mb-4">
                 <div class="p-2 border rounded">
                     <header class="text-xl font-bold mb-4 px-1">봤던 내용 업데이트</header>
 					{#each recent_seen as item}
