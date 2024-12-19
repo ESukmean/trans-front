@@ -73,6 +73,14 @@
                             </div>
                         </div>
                         <div class="flex-1 min-w-36">
+                            <div class="font-bold">스크롤</div>
+                            <div class="p-2 mb-4">
+                                <label class="block"><input type="checkbox" bind:checked={reader_config.scrollShow}/> 스크롤 버튼 표시</label>
+                                <!-- <label class="block"><input type="checkbox" bind:checked={reader_config.scrollByLine}/> 문장 단위 스크롤 버튼</label>
+                                <label class="block"><input type="checkbox" bind:checked={reader_config.scrollInfiniteChapter}/> 다음 챕터 이어보기</label> -->
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-36">
                             <div class="font-bold">보기</div>
                             <div class="p-2">
                                 <label class="block"><input type="checkbox" bind:checked={reader_config.viewWide}/> 와이드로 보기</label>
@@ -89,14 +97,6 @@
                                     <option value="noto-sans-medium">폰트: Noto Sans 보통</option>
                                     <option value="noto-sans-bold">폰트: Noto Sans 보통</option>
                                 </select>
-                            </div>
-                        </div>
-                        <div class="flex-1 min-w-36">
-                            <div class="font-bold">스크롤</div>
-                            <div class="p-2 mb-4">
-                                <label class="block"><input type="checkbox" bind:checked={reader_config.scrollShow}/> 스크롤 버튼 표시</label>
-                                <!-- <label class="block"><input type="checkbox" bind:checked={reader_config.scrollByLine}/> 문장 단위 스크롤 버튼</label>
-                                <label class="block"><input type="checkbox" bind:checked={reader_config.scrollInfiniteChapter}/> 다음 챕터 이어보기</label> -->
                             </div>
                         </div>
                     </div>                   
