@@ -1,1 +1,1 @@
-import { redirect } from '@sveltejs/kit'
+import { redirect } from "@sveltejs/kit";

@@ -1,26 +1,44 @@
-<script>
+<script lang="ts">
+    import { configRead, configSet } from '$lib/readerConfig.js'
+
+    interface listItemType {
+        title_id: number;
+        chapter_id: number;
+        chapter_name: string;
+        modified: string;
+    }
+
 	import Frame from '$lib/Frame.svelte';
 
     const { data } = $props();
+
+    ///////////////////////////////////////////
     const avail_order = ['old', 'latest', 'a-z', 'z-a'];
     let order = $state(data.order && avail_order.includes(data.order) ? data.order : 'old');
     
-    function order_func(a, b) {
-        // if (Math.random() < 0.5) return -1
-        // return 1;
+    function orderCompFunc(a: listItemType, b: listItemType): number {
         switch (order) {
-            case 'old':
-                return a['modified'].localeCompare(b['modified'])
             case 'latest':
                 return b['modified'].localeCompare(a['modified'])
             case 'a-z':
                 return a['chapter_name'].localeCompare(b['chapter_name'])
             case 'z-a':
                 return b['chapter_name'].localeCompare(a['chapter_name'])
+
+            case 'old':
+            default:
+                return a['modified'].localeCompare(b['modified'])
         }
     }
-    
-    let list = $derived(data.list.toSorted(order_func))
+    let list = $derived(data.list.toSorted(orderCompFunc))
+
+    ///////////////////////////////////////////
+
+    let reader_config = $state(configRead())
+    $effect(() => {
+        configSet(reader_config)
+    })
+
 </script>
 <Frame>
 	<div class="container mx-auto p-2 py-6">
@@ -45,21 +63,21 @@
                     <header class="text-xl font-bold py-2 mb-4">🛠️ 뷰어 기본설정</header>
                     <div class="font-bold">표시 문장 설정</div>
                     <div class="p-2">
-                        <label class="block"><input type="checkbox" /> 일본어 원어 보기</label>
-                        <label class="block"><input type="checkbox" /> GPT 번역 보기</label>
-                        <label class="block"><input type="checkbox" /> Claude 번역 보기</label>
+                        <label class="block"><input type="checkbox" bind:checked={reader_config.showJapanese} /> 일본어 원어 보기</label>
+                        <label class="block"><input type="checkbox" bind:checked={reader_config.showGPT}/> GPT 번역 보기</label>
+                        <label class="block"><input type="checkbox" bind:checked={reader_config.showClaude}/> Claude 번역 보기</label>
                     </div>
                     <div class="mt-4 font-bold">스크롤</div>
                     <div class="p-2">
-                        <label class="block"><input type="checkbox" /> 스크롤 버튼 표시</label>
-                        <label class="block"><input type="checkbox" /> 문장 단위 스크롤 버튼</label>
-                        <label class="block"><input type="checkbox" /> 다음 챕터 이어보기</label>
+                        <label class="block"><input type="checkbox" bind:checked={reader_config.scrollShow}/> 스크롤 버튼 표시</label>
+                        <label class="block"><input type="checkbox" bind:checked={reader_config.scrollByLine}/> 문장 단위 스크롤 버튼</label>
+                        <label class="block"><input type="checkbox" bind:checked={reader_config.scrollInfiniteChapter}/> 다음 챕터 이어보기</label>
                     </div>
                     <div class="mt-4 font-bold">보기</div>
                     <div class="p-2">
-                        <label class="block"><input type="checkbox" /> 와이드로 보기</label>
-                        <label class="block">폰트 크기 (px): <input type="number" min=1 max=128 step=0.1 value="12.5"/> </label>
-                        <label class="block">줄 간격 (rem): <input type="number" min=0.1 max=30 step=0.01 value="1.4"/> </label>
+                        <label class="block"><input type="checkbox" bind:checked={reader_config.viewWide}/> 와이드로 보기</label>
+                        <label class="block">폰트 크기 (px): <input type="number" min=1 max=128 step=0.1 bind:value={reader_config.viewFontSize}/> </label>
+                        <label class="block">줄 간격 (rem): <input type="number" min=0.1 max=30 step=0.01  bind:value={reader_config.viewLineHeight}/> </label>
                     </div>
                 </div>
             </div>
