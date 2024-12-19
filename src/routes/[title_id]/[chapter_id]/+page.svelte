@@ -40,16 +40,20 @@
     function scrollDown() {
         const divs = document.querySelectorAll("article div");
         const targetIdx = getBottomElement(divs);
-        if (targetIdx == 0) {
+        const target = divs[targetIdx];
+
+        const scrollAmount = target.getBoundingClientRect().y - config.viewFontSize
+
+        if (targetIdx == 0 || scrollAmount <= 0) {
             const scrollAmount = window.innerHeight * 0.75;
             window.scrollBy({ top: -scrollAmount });
 
             return;
         }
 
-        const target = divs[targetIdx];
+        
         window.scrollBy({
-            top: target.getBoundingClientRect().y - config.viewFontSize,
+            top: scrollAmount
         });
 
         const prevIndicator =
@@ -77,19 +81,24 @@
     }
 
     function scrollUp() {
+        const screenHeight = window.innerHeight;
+
         const divs = document.querySelectorAll("article div");
         const targetIdx = getTopElement(divs);
-        if (targetIdx == 0) {
+        const target = divs[targetIdx];
+
+        const scrollAmount = target.getBoundingClientRect().bottom - screenHeight + config.viewFontSize
+        console.log(scrollAmount)
+
+        if (targetIdx == 0 || scrollAmount >= 0) {
             const scrollAmount = window.innerHeight * 0.75;
             window.scrollBy({ top: scrollAmount });
 
             return;
         }
 
-        const target = divs[targetIdx];
-        const screenHeight = window.innerHeight;
         window.scrollBy({
-            top: target.getBoundingClientRect().bottom - screenHeight + config.viewFontSize,
+            top: scrollAmount
         });
 
         const prevIndicator =
