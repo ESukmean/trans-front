@@ -66,26 +66,37 @@
                     <div class="mt-4 flex flex-wrap lg:flex-none {hideViewerConfig ? 'hidden' : 'block'}">
                         <div class="flex-1 min-w-36">
                             <div class="font-bold">표시 문장 설정</div>
-                            <div class="p-2">
+                            <div class="p-2 mb-4 ">
                                 <label class="block"><input type="checkbox" bind:checked={reader_config.showJapanese} /> 일본어 원어 보기</label>
                                 <label class="block"><input type="checkbox" bind:checked={reader_config.showGPT}/> GPT 번역 보기</label>
                                 <label class="block"><input type="checkbox" bind:checked={reader_config.showClaude}/> Claude 번역 보기</label>
                             </div>
                         </div>
                         <div class="flex-1 min-w-36">
-                            <div class="mt-4 font-bold">스크롤</div>
-                            <div class="p-2">
-                                <label class="block"><input type="checkbox" bind:checked={reader_config.scrollShow}/> 스크롤 버튼 표시</label>
-                                <label class="block"><input type="checkbox" bind:checked={reader_config.scrollByLine}/> 문장 단위 스크롤 버튼</label>
-                                <label class="block"><input type="checkbox" bind:checked={reader_config.scrollInfiniteChapter}/> 다음 챕터 이어보기</label>
-                            </div>
-                        </div>
-                        <div class="flex-1 min-w-36">
-                            <div class="mt-4 font-bold">보기</div>
+                            <div class="font-bold">보기</div>
                             <div class="p-2">
                                 <label class="block"><input type="checkbox" bind:checked={reader_config.viewWide}/> 와이드로 보기</label>
                                 <label class="block">폰트 크기 (px): <input type="number" min=1 max=128 step=0.1 bind:value={reader_config.viewFontSize}/> </label>
                                 <label class="block">줄 간격 (rem): <input type="number" min=0.1 max=30 step=0.01  bind:value={reader_config.viewLineHeight}/> </label>
+                                <select bind:value={reader_config.viewFontFamily} class="mt-1 p-1 block">
+                                    <option value="kopub-d-light">폰트: KoPub 돋음 가늘게</option>
+                                    <option value="kopub-d-medium">폰트: KoPub 돋음 보통</option>
+                                    <option value="kopub-d-bold">폰트: KoPub 돋음 굵게</option>
+                                    <option value="kopub-b-light">폰트: KoPub 바탕 가늘게</option>
+                                    <option value="kopub-b-medium">폰트: KoPub 바탕 보통</option>
+                                    <option value="kopub-b-bold">폰트: KoPub 바탕 굵게</option>
+                                    <option value="noto-sans-light">폰트: Noto Sans 가늘게</option>
+                                    <option value="noto-sans-medium">폰트: Noto Sans 보통</option>
+                                    <option value="noto-sans-bold">폰트: Noto Sans 보통</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-36">
+                            <div class="font-bold">스크롤</div>
+                            <div class="p-2 mb-4">
+                                <label class="block"><input type="checkbox" bind:checked={reader_config.scrollShow}/> 스크롤 버튼 표시</label>
+                                <!-- <label class="block"><input type="checkbox" bind:checked={reader_config.scrollByLine}/> 문장 단위 스크롤 버튼</label>
+                                <label class="block"><input type="checkbox" bind:checked={reader_config.scrollInfiniteChapter}/> 다음 챕터 이어보기</label> -->
                             </div>
                         </div>
                     </div>                   

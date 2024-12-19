@@ -11,6 +11,7 @@ interface ConfigType {
   viewWide: boolean;
   viewFontSize: number;
   viewLineHeight: number;
+  viewFontFamily: String;
 }
 
 function configRead(): ConfigType {
@@ -26,6 +27,7 @@ function configRead(): ConfigType {
     viewWide: false,
     viewFontSize: 18,
     viewLineHeight: 1.4,
+    viewFontFamily: 'kopub-b-bold'
   };
 
   if (browser) {
