@@ -68,8 +68,8 @@
 						</thead>
 						<tbody>
 							{#each list as item}
-								<tr class="hover:bg-slate-100">
-									<td><a href="/{item.title_id}/{item.chapter_id}/" class="py-1.5 block">{item.chapter_name}</a></td>
+								<tr class="hover:bg-slate-100" >
+									<td><a href="/{item.title_id}/{item.chapter_id}" class="py-1.5 block visited:text-purple-500">{item.chapter_name}</a></td>
 									<td>{item.modified}</td>
 								</tr>
 							{/each}

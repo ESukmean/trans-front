@@ -5,7 +5,8 @@
 	let search_input = $state('');
 	const { data } = $props();
 	const list = $derived(data.list.filter(item => search_input.length == 0 || (item.title.includes(search_input) || item.latest_chapter.includes(search_input))));
-	const recent_seen = data.list.filter(item => item.title.includes('이세계')).map(item => { item.has_update = item.title.includes('에'); return item; })
+	const recent_seen_list = data.recent_seen_list.map(item => item.id)
+	const recent_seen = data.recent_seen_list
 
 	export const snapshot: Snapshot<string> ={
 		capture: () => search_input,
@@ -18,7 +19,7 @@
 		<div class="lg:flex gap-4">
 			<div class="w-80 lg:h-full lg:mt-16">
                 <div class="p-2 border rounded">
-                    <header class="text-xl font-bold mb-4 px-1">최근 본 항목</header>
+                    <header class="text-xl font-bold mb-4 px-1">봤던 내용 업데이트</header>
 					{#each recent_seen as item}
 						<a href="/{item.id}/" class="hover:bg-slate-100 py-2 text-sm px-1 block {item.has_update ? 'bg-emerald-50' : ''}">
 							<div class="block font-bold text-md">{item.title}</div>
@@ -50,9 +51,9 @@
 						</thead>
 						<tbody>
 							{#each list as item}
-								<tr class="hover:bg-slate-100">
-									<td><a href="/{item.id}/" class="py-1.5 block">{item.title}</a></td>
-									<td><a href="/{item.id}/{item.chapter_id}/" class="block">{item.latest_chapter}</a></td>
+								<tr class="{recent_seen_list.includes(item.id) ? 'bg-indigo-50' : '' } hover:bg-slate-100">
+									<td><a href={!recent_seen_list.includes(item.id) ? '/' + item.id : '/' + item.id + '?order=latest'} class="py-1.5 block">{item.title}</a></td>
+									<td><a href="/{item.id}/{item.chapter_id}" class="block">{item.latest_chapter}</a></td>
 									<td>{item.modified}</td>
 								</tr>
 							{/each}
