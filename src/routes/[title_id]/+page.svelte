@@ -132,6 +132,12 @@
                         </div>
                     </div>                   
                 </div>
+                <div class="flex-1 flex">
+                    <div class="flex-1">
+                        <a href="./new_chapter" class="block rounded border border-emerald-200 bg-emerald-700/80 hover:bg-emerald-700 p-2 text-center text-white">챕터 추가</a>
+                    </div>
+                    <div class="flex-1"></div>
+                </div>
             </div>
 			<div class="lg:flex-1 lg:h-full">
 				<div class="pb-2">

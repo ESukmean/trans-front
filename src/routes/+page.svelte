@@ -52,7 +52,7 @@
 						<tbody>
 							{#each list as item}
 								<tr class="{recent_seen_list.includes(item.id) ? 'bg-indigo-50' : '' } hover:bg-slate-100">
-									<td><a href={!recent_seen_list.includes(item.id) ? '/' + item.id : '/' + item.id + '?order=latest'} class="py-1.5 block">{item.title}</a></td>
+									<td><a href={!recent_seen_list.includes(item.id) ? `/${item.id}/` : `/${item.id}/?order=latest`} class="py-1.5 block">{item.title}</a></td>
 									<td><a href="/{item.id}/{item.chapter_id}" class="block">{item.latest_chapter}</a></td>
 									<td>{item.modified}</td>
 								</tr>
