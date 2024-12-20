@@ -88,15 +88,22 @@
                                 <label class="block">폰트 크기 (px): <input type="number" min=1 max=128 step=0.1 bind:value={reader_config.viewFontSize}/> </label>
                                 <label class="block">줄 간격 (rem): <input type="number" min=0.1 max=30 step=0.01  bind:value={reader_config.viewLineHeight}/> </label>
                                 <select bind:value={reader_config.viewFontFamily} class="mt-1 p-1 block">
-                                    <option value="kopub-d-light">폰트: KoPub 돋음 가늘게</option>
-                                    <option value="kopub-d-medium">폰트: KoPub 돋음 보통</option>
-                                    <option value="kopub-d-bold">폰트: KoPub 돋음 굵게</option>
-                                    <option value="kopub-b-light">폰트: KoPub 바탕 가늘게</option>
-                                    <option value="kopub-b-medium">폰트: KoPub 바탕 보통</option>
-                                    <option value="kopub-b-bold">폰트: KoPub 바탕 굵게</option>
-                                    <option value="noto-sans-light">폰트: Noto Sans 가늘게</option>
-                                    <option value="noto-sans-medium">폰트: Noto Sans 보통</option>
-                                    <option value="noto-sans-bold">폰트: Noto Sans 보통</option>
+                                    <optgroup label="돋움체 (고딕, Sans)">
+                                        <option value="KoPub Dotum Light">폰트: KoPub 돋음 · 가늘게</option>
+                                        <option value="KoPub Dotum Medium">폰트: KoPub 돋음 · 보통</option>
+                                        <option value="KoPub Dotum Bold">폰트: KoPub 돋음 · 굵게</option>
+                                        <option value="Noto Sans Light">폰트: Noto Sans · 가늘게</option>
+                                        <option value="Noto Sans Regular">폰트: Noto Sans · 보통</option>
+                                        <option value="Noto Sans Bold">폰트: Noto Sans · 굵게</option>
+                                    </optgroup>
+                                    <optgroup label="바탕체 (Serif)">
+                                        <option value="KoPub Batang Light">폰트: KoPub 바탕 · 가늘게</option>
+                                        <option value="KoPub Batang Medium">폰트: KoPub 바탕 · 보통</option>
+                                        <option value="KoPub Batang Bold">폰트: KoPub 바탕 · 굵게</option>
+                                        <option value="Noto Serif Light">폰트: Noto Serif · 가늘게</option>
+                                        <option value="Noto Serif Regular">폰트: Noto Serif · 보통</option>
+                                        <option value="Noto Serif Bold">폰트: Noto Serif · 굵게</option>
+                                    </optgroup>
                                 </select>
                             </div>
                         </div>
@@ -116,7 +123,7 @@
 							{#each list as item}
 								<tr class="hover:bg-slate-100" >
 									<td><a href="/{item.title_id}/{item.chapter_id}" class="py-1.5 block visited:text-purple-500">{item.chapter_name}</a></td>
-									<td>{item.modified}</td>
+									<td><a href="/{item.title_id}/{item.chapter_id}" class="py-1.5 block">{item.modified}</a></td>
 								</tr>
 							{/each}
 						</tbody>

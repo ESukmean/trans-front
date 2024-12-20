@@ -3,3 +3,53 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+@font-face {
+    font-family: 'KoPub Dotum Light';
+    src: url('/fonts/KoPubWorld Dotum_Pro Light.otf');
+}
+@font-face {
+    font-family: 'KoPub Dotum Medium';
+    src: url('/fonts/KoPubWorld Dotum_Pro Medium.otf');
+}
+@font-face {
+    font-family: 'KoPub Dotum Bold';
+    src: url('/fonts/KoPubWorld Dotum_Pro Bold.otf');
+}
+
+@font-face {
+    font-family: 'KoPub Batang Light';
+    src: url('/fonts/KoPubWorld Batang_Pro Light.otf');
+}
+@font-face {
+    font-family: 'KoPub Batang Medium';
+    src: url('/fonts/KoPubWorld Batang_Pro Medium.otf');
+}
+@font-face {
+    font-family: 'KoPub Batang Bold';
+    src: url('/fonts/KoPubWorld Batang_Pro Bold.otf');
+}
+@font-face {
+    font-family: 'Noto Sans Light';
+    src: url('/fonts/NotoSansKR-Light.ttf');
+}
+@font-face {
+    font-family: 'Noto Sans Regular';
+    src: url('/fonts/NotoSansKR-Regular.ttf');
+}
+@font-face {
+    font-family: 'Noto Sans Bold';
+    src: url('/fonts/NotoSansKR-Bold.ttf');
+}
+@font-face {
+    font-family: 'Noto Serif Light';
+    src: url('/fonts/NotoSerifKR-Light.ttf');
+}
+@font-face {
+    font-family: 'Noto Serif Regular';
+    src: url('/fonts/NotoSerifKR-Regular.ttf');
+}
+@font-face {
+    font-family: 'Noto Serif Bold';
+    src: url('/fonts/NotoSerifKR-Bold.ttf');
+}

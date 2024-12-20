@@ -121,6 +121,24 @@
 
         lastScrollMethod = "U";
     }
+
+    function fontWeightEmulate(fontName: string): number {
+        const weightTable = {
+            'Light': 300,
+            'Regular': 400,
+            'Medium': 500,
+            'Bold': 500
+        };
+
+        for (const [k, v] of Object.entries(weightTable)) {
+            if (fontName.includes(k)) return v;
+        }
+
+        return weightTable['Regular'];
+    }
+
+    const fontWeightEmulated = fontWeightEmulate(config.viewFontFamily);
+
 </script>
 
 <article
@@ -128,6 +146,8 @@
     style:line-height={config.viewLineHeight}
     style:font-size={config.viewFontSize + "px"}
     style:--line-height={config.viewLineHeight + "rem"}
+    style:--font-family={config.viewFontFamily}
+    style:--font-weight={fontWeightEmulated}
 >
     <div>
         <span>26話【開拓村の形ができたら、お見合いが始まります】</span><span
@@ -720,13 +740,15 @@
 <style>
     article > div {
         min-height: var(--line-height);
+        font-family: var(--font-family);
+        font-weight: var(--font-weight);
     }
     :global(.line-indicator) {
         background: greenyellow;
     }
     :global(.line-indicator-next) {
         /* border: greenyellow 2px solid */
-        background: #c9ff7f;
-        border: 1px #c0ff64 solid;
+        background: #e9ffcc;
+        border: 2px #a8ff33 solid;
     }
 </style>
