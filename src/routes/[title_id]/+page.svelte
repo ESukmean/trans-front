@@ -80,7 +80,7 @@
                                 <label class="block"><input type="checkbox" bind:checked={reader_config.scrollInfiniteChapter}/> 다음 챕터 이어보기</label> -->
                             </div>
                         </div>
-                        <div class="flex-1 min-w-36">
+                        <div class="flex-1 min-w-56">
                             <div class="font-bold">보기</div>
                             <div class="p-2">
                                 <label class="block"><input type="checkbox" bind:checked={reader_config.viewWide}/> 와이드로 보기</label>

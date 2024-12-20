@@ -66,7 +66,6 @@
         document
             .querySelectorAll("div.line-indicator-next")
             .forEach((e) => e.classList.remove("line-indicator-next"));
-        console.log(prevIndicator);
 
         if (prevIndicator != null) {
             prevIndicator.classList.add("line-indicator");
@@ -88,11 +87,10 @@
         const target = divs[targetIdx];
 
         const scrollAmount = target.getBoundingClientRect().bottom - screenHeight + config.viewFontSize
-        console.log(scrollAmount)
 
         if (targetIdx == 0 || scrollAmount >= 0) {
             const scrollAmount = window.innerHeight * 0.75;
-            window.scrollBy({ top: scrollAmount });
+            window.scrollBy({ top: -scrollAmount });
 
             return;
         }
@@ -728,7 +726,7 @@
     }
     :global(.line-indicator-next) {
         /* border: greenyellow 2px solid */
-        background: #d4ff98;
+        background: #c9ff7f;
         border: 1px #c0ff64 solid;
     }
 </style>

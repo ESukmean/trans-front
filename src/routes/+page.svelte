@@ -4,7 +4,7 @@
 
 	let search_input = $state('');
 	const { data } = $props();
-	const list = $derived(data.list.filter(item => search_input.length == 0 || (item.title.includes(search_input) || item.latest_chapter.includes(search_input))));
+	const list = $derived(data.list.filter(item => search_input.length == 0 || item.title.includes(search_input)));
 	const recent_seen_list = data.recent_seen_list.map(item => item.id)
 	const recent_seen = data.recent_seen_list
 
