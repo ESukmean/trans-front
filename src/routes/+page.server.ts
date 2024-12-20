@@ -17,7 +17,7 @@ export async function load(event) {
           id: e.titleId,
           title: e.titleName,
           chapter_id: e.chapterId,
-          latest_chapter: e.latestChapter,
+          latest_chapter: e.latestChapter?.replace('T', ' '),
           modified: e.modified
         }
       }

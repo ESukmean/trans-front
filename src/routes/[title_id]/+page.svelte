@@ -32,7 +32,8 @@
                 return a['modified'].localeCompare(b['modified'])
         }
     }
-    let list = $derived(data.list.toSorted(orderCompFunc))
+    let list = $derived(data.list.toSorted(orderCompFunc));
+    const title = data.title;
 
     ///////////////////////////////////////////
 
@@ -44,7 +45,7 @@
 </script>
 <Frame>
 	<div class="container mx-auto p-2 py-6">
-        <header class="text-2xl font-bold py-2 mb-6">마력 치트인 마녀가 되었습니다 ~창조 마법으로 자유로운 이세계 생활~</header>
+        <header class="text-2xl font-bold py-2 mb-6">{title.title}</header>
         <div class="lg:flex gap-4">
 			<div class="w-full lg:w-80 lg:h-full flex flex-col gap-2  mb-4">
                 <div class="p-2 border rounded">

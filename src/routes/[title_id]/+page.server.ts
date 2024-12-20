@@ -8,6 +8,11 @@ interface TransArticle {
   detail: string;
   titleNo: number;
 }
+interface TransTitle {
+  id: number;
+  title: String;
+  lastModify: String;
+}
 
 
 export async function load({params}) {
@@ -16,15 +21,18 @@ export async function load({params}) {
     return error(404, '적절하지 않은 타이틀 입니다.');
   }
 
+  
+  const title: TransTitle = await fetch(`http://trans-back.kr-2-ts.esukmean.com/api/${titleId}`).then(res => res.json());
   const list: [TransArticle] = await fetch(`http://trans-back.kr-2-ts.esukmean.com/api/${titleId}/`).then(res => res.json());
   return {
+    title: title,
     list: list.map(
       e => {
         return {
           title_id: e.titleNo,
           chapter_name: e.chapterTitle,
           chapter_id: e.id,
-          modified: e.lastModify
+          modified: e.lastModify.replace('T', ' ')
         }
       }
     )
