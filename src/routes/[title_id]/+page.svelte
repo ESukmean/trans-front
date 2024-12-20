@@ -10,9 +10,15 @@
     }
 
 	import Frame from '$lib/Frame.svelte';
+    import type { Snapshot } from '@sveltejs/kit';
 
     const { data } = $props();
+    
     let hideViewerConfig = $state(isMobileScreen());
+    export const snapshot: Snapshot<boolean> ={
+		capture: () => hideViewerConfig,
+		restore: (val) => hideViewerConfig = val
+	};
 
     ///////////////////////////////////////////
     const avail_order = ['old', 'latest', 'a-z', 'z-a'];
