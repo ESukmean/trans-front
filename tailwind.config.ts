@@ -8,6 +8,7 @@ export default {
     fontFamily: {
       sans: [
         "KoPub Dotum",
+        "KoPub Dotum Medium",
         "ui-sans-serif",
         "system-ui",
         "sans-serif",
@@ -18,6 +19,7 @@ export default {
       ],
       serif: [
         "KoPub Batang",
+        "KoPub Batang Medium",
         "ui-serif",
         "Georgia",
         "Cambria",

@@ -27,7 +27,7 @@ function configRead(): ConfigType {
     viewWide: false,
     viewFontSize: 18,
     viewLineHeight: 1.4,
-    viewFontFamily: 'KoPub Batang Medium'
+    viewFontFamily: 'KoPub Dotum Medium'
   };
 
   if (browser) {

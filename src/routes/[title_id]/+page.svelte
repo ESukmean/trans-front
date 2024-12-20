@@ -48,6 +48,23 @@
         configSet(reader_config)
     })
 
+    function fontWeightEmulate(fontName: string): number {
+        const weightTable = {
+            'Light': 300,
+            'Regular': 400,
+            'Medium': 500,
+            'Bold': 500
+        };
+
+        for (const [k, v] of Object.entries(weightTable)) {
+            if (fontName.includes(k)) return v;
+        }
+
+        return weightTable['Regular'];
+    }
+
+    let sampleFontFamily = $derived(reader_config.viewFontFamily)
+    let sampleFontWeight = $derived(fontWeightEmulate(reader_config.viewFontFamily))
 </script>
 <Frame>
 	<div class="container mx-auto p-2 py-6">
@@ -87,12 +104,12 @@
                                 <label class="block"><input type="checkbox" bind:checked={reader_config.scrollInfiniteChapter}/> 다음 챕터 이어보기</label> -->
                             </div>
                         </div>
-                        <div class="flex-1 min-w-56">
+                        <div class="flex-1 min-w-56" style:font-family={sampleFontFamily} style:font-weight={sampleFontWeight}>
                             <div class="font-bold">보기</div>
                             <div class="p-2">
                                 <label class="block"><input type="checkbox" bind:checked={reader_config.viewWide}/> 와이드로 보기</label>
-                                <label class="block">폰트 크기 (px): <input type="number" min=1 max=128 step=0.1 bind:value={reader_config.viewFontSize}/> </label>
-                                <label class="block">줄 간격 (rem): <input type="number" min=0.1 max=30 step=0.01  bind:value={reader_config.viewLineHeight}/> </label>
+                                <label class="block">폰트 크기 (px): <input class="w-20" type="number" min=1 max=128 step=0.1 bind:value={reader_config.viewFontSize}/> </label>
+                                <label class="block">줄 간격 (rem): <input class="w-20" type="number" min=0.1 max=30 step=0.01  bind:value={reader_config.viewLineHeight}/> </label>
                                 <select bind:value={reader_config.viewFontFamily} class="mt-1 p-1 block">
                                     <optgroup label="돋움체 (고딕, Sans)">
                                         <option value="KoPub Dotum Light">폰트: KoPub 돋음 · 가늘게</option>

@@ -53,3 +53,7 @@
     font-family: 'Noto Serif Bold';
     src: url('/fonts/NotoSerifKR-Bold.ttf');
 }
+
+html {
+    font-family: 'KoPub Dotum Medium';
+}
