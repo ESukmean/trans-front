@@ -10,49 +10,47 @@
     let lineShow: [string, TransLine[]][] = $state([])
     let showLineType = $state.raw(['1'])
 
-    $effect(() => {
-        const resultSet = {
-            0: config.showJapanese,
-            1: config.showGPT,
-            2: config.showClaude
-        }
+    const resultSet = {
+        0: config.showJapanese,
+        1: config.showGPT,
+        2: config.showClaude
+    }
 
-        let tmp = []
-        for (const [k, v] of Object.entries(resultSet)) {
-            if (v) tmp.push(k)
-        }
+    let tmp = []
+    for (const [k, v] of Object.entries(resultSet)) {
+        if (v) tmp.push(k)
+    }
 
-        if (tmp.length == 0) {
-            tmp = ['1']
-        }
+    if (tmp.length == 0) {
+        tmp = ['1']
+    }
 
-        showLineType = tmp
+    showLineType = tmp
 
-        let lineAggregate: {[k: string]: TransLine[]} = {}
-        lines.forEach((v, _) => {
-            let tmp: {[type: string]: TransLine} = {}
-            
-            const lineKey = v[0]
-            const lineEntry = Object.entries(v[1])
-            lineEntry.forEach(([k, v]) => {
-                if (!showLineType.includes(k)) return
-                
-                tmp[k] = v
-            });
-            
-
-            if (Object.keys(tmp).length == 0 && v[1]['1'] != undefined) {
-                // failback (아무것도 없으면 GPT 번역을 표시)
-                tmp[showLineType[0]] = v[1]['1']
-            }
-            
-
-            const aggregated = Object.entries(tmp).toSorted((a, b) => parseInt(a[0]) - parseInt(b[0])).map(([_, v]) => v)
-            lineAggregate[lineKey] = aggregated
-        })
+    let lineAggregate: {[k: string]: TransLine[]} = {}
+    lines.forEach((v, _) => {
+        let tmp: {[type: string]: TransLine} = {}
         
-        lineShow = Object.entries(lineAggregate).toSorted((a, b) => parseInt(a[0]) - parseInt(b[0]))
+        const lineKey = v[0]
+        const lineEntry = Object.entries(v[1])
+        lineEntry.forEach(([k, v]) => {
+            if (!showLineType.includes(k)) return
+            
+            tmp[k] = v
+        });
+        
+
+        if (Object.keys(tmp).length == 0 && v[1]['1'] != undefined) {
+            // failback (아무것도 없으면 GPT 번역을 표시)
+            tmp[showLineType[0]] = v[1]['1']
+        }
+        
+
+        const aggregated = Object.entries(tmp).toSorted((a, b) => parseInt(a[0]) - parseInt(b[0])).map(([_, v]) => v)
+        lineAggregate[lineKey] = aggregated
     })
+    
+    lineShow = Object.entries(lineAggregate).toSorted((a, b) => parseInt(a[0]) - parseInt(b[0]))
 
 
 
@@ -192,22 +190,22 @@
         return weightTable['Regular'];
     }
 
-    const fontWeightEmulated = fontWeightEmulate(config.viewFontFamily);
-    let headerMessage = $state('')
-    $effect(() => {
+    function loadHeaderMessage(detail: string) :string {
         try {
-            const header = JSON.parse(article.detail)
+            const header = JSON.parse(detail)
             let msgConact = header['common']
     
             showLineType.forEach((v) => {
                 msgConact = msgConact + header[`trans-${v}`]
             })
     
-            headerMessage = msgConact
+            return msgConact
         } catch {
-            headerMessage = article.detail
+            return article.detail
         }
-    })
+    }
+    const fontWeightEmulated = fontWeightEmulate(config.viewFontFamily);
+    let headerMessage = $state(loadHeaderMessage(article.detail))
 
 </script>
 
