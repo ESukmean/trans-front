@@ -8,9 +8,9 @@
 
     const config = data.config;
     let lineShow: [string, TransLine[]][] = $state([])
+    let showLineType = $state.raw(['1'])
 
     $effect(() => {
-        let showLineType = ['1']
         const resultSet = {
             0: config.showJapanese,
             1: config.showGPT,
@@ -51,7 +51,6 @@
             lineAggregate[lineKey] = aggregated
         })
         
-        console.log(lineAggregate)
         lineShow = Object.entries(lineAggregate).toSorted((a, b) => parseInt(a[0]) - parseInt(b[0]))
     })
 
@@ -194,6 +193,21 @@
     }
 
     const fontWeightEmulated = fontWeightEmulate(config.viewFontFamily);
+    let headerMessage = $state('')
+    $effect(() => {
+        try {
+            const header = JSON.parse(article.detail)
+            let msgConact = header['common']
+    
+            showLineType.forEach((v) => {
+                msgConact = msgConact + header[`trans-${v}`]
+            })
+    
+            headerMessage = msgConact
+        } catch {
+            headerMessage = article.detail
+        }
+    })
 
 </script>
 
@@ -205,6 +219,11 @@
     style:--font-family={config.viewFontFamily}
     style:--font-weight={fontWeightEmulated}
 >   
+    <header class="bg-slate-100 p-2 border border-slate-400 rounded mb-8" >
+        <h1 class="pb-2 block font-bold">{title.title}<br><small class="text-slate-600 font-normal">{article.chapterTitle}</small></h1>
+        <hr />
+        {@html headerMessage}
+    </header>
     {#each lineShow as [lineIdx, lineGroup]}
         <div data-line-no={lineIdx}>
             {#each lineGroup as line}
