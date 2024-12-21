@@ -1,11 +1,63 @@
 <script lang="ts">
+    import type { TransLine } from './+page.server.js';
+
     const { data } = $props();
     const lines = data.line;
     const title = data.title;
     const article = data.article;
 
     const config = data.config;
+    let lineShow: [string, TransLine[]][] = $state([])
 
+    $effect(() => {
+        let showLineType = ['1']
+        const resultSet = {
+            0: config.showJapanese,
+            1: config.showGPT,
+            2: config.showClaude
+        }
+
+        let tmp = []
+        for (const [k, v] of Object.entries(resultSet)) {
+            if (v) tmp.push(k)
+        }
+
+        if (tmp.length == 0) {
+            tmp = ['1']
+        }
+
+        showLineType = tmp
+
+        let lineAggregate: {[k: string]: TransLine[]} = {}
+        lines.forEach((v, _) => {
+            let tmp: {[type: string]: TransLine} = {}
+            
+            const lineKey = v[0]
+            const lineEntry = Object.entries(v[1])
+            lineEntry.forEach(([k, v]) => {
+                if (!showLineType.includes(k)) return
+                
+                tmp[k] = v
+            });
+            
+
+            if (Object.keys(tmp).length == 0 && v[1]['1'] != undefined) {
+                // failback (아무것도 없으면 GPT 번역을 표시)
+                tmp[showLineType[0]] = v[1]['1']
+            }
+            
+
+            const aggregated = Object.entries(tmp).toSorted((a, b) => parseInt(a[0]) - parseInt(b[0])).map(([_, v]) => v)
+            lineAggregate[lineKey] = aggregated
+        })
+        
+        console.log(lineAggregate)
+        lineShow = Object.entries(lineAggregate).toSorted((a, b) => parseInt(a[0]) - parseInt(b[0]))
+    })
+
+
+
+    
     let lastScrollMethod = "D"; // U, D
     function getBottomElement(elements: NodeListOf<Element>, startIdx = 0) {
         const screenHeight = window.innerHeight;
@@ -153,10 +205,10 @@
     style:--font-family={config.viewFontFamily}
     style:--font-weight={fontWeightEmulated}
 >   
-    {#each lines as [lineIdx, lineGroup]}
+    {#each lineShow as [lineIdx, lineGroup]}
         <div data-line-no={lineIdx}>
-            {#each Object.entries(lineGroup).toSorted((a, b) => parseInt(a[0]) - parseInt(b[0])) as [lineType, line]}
-                <span class={`trans-line-type-${lineType}`} data-line-type={lineType}>{line.line}</span>
+            {#each lineGroup as line}
+                <span class={`trans-line-type-${line.id.type}`} data-line-type={line.id.type}>{line.line}</span>
             {/each}
         </div>
     {/each}

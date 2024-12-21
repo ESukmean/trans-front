@@ -19,7 +19,7 @@ interface TransLineId {
     type: number; // Corresponds to "type" in the "id" field
 }
 
-interface TransLine {
+export interface TransLine {
     id: TransLineId; // Nested object for "id"
     line: string; // Corresponds to "line"
     articleId: number; // Corresponds to "articleId"
@@ -46,10 +46,11 @@ export async function load({params}) {
 
     lineAggreated[v.id.lineNo][v.id.type] = v
   })
+  const lineOrderd: [string, {[key: number]: TransLine}][] = Object.entries(lineAggreated).toSorted((a, b) => parseInt(a[0]) - parseInt(b[0]))
   
   return {
     title: title,
     chapter: article,
-    line: Object.entries(lineAggreated).toSorted((a, b) => parseInt(a[0]) - parseInt(b[0]))
+    line: lineOrderd
   };
 }
