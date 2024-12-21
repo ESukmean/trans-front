@@ -21,7 +21,7 @@ function configRead(): ConfigType {
     showGPT: true,
     showClaude: false,
 
-    scrollShow: false,
+    scrollShow: true,
     scrollByLine: false,
     scrollInfiniteChapter: false,
 

@@ -235,7 +235,7 @@
 <div
     class="{config.scrollShow
         ? 'block'
-        : 'hidden'} fixed bottom-[25%] right-[15%]"
+        : 'hidden'} fixed bottom-[16%] right-[13%]"
 >
     <button
         class="cursor-pointer w-12 h-12 bg-slate-200/15 hover:bg-slate-300 backdrop-blur rounded-full border border-2 text-center flex items-center content-center text-2xl"
