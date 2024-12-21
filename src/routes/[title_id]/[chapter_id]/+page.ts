@@ -1,7 +1,10 @@
 import { configRead } from "$lib/readerConfig.js";
 
-export function load() {
+export function load({ data, url }) {
   return {
-    config: configRead(),
-  };
+      config: configRead(),
+      line: data.line,
+      article: data.chapter,
+      title: data.title
+  }
 }

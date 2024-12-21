@@ -95,8 +95,6 @@
 
         chapterLines = chapterLines.toSpliced(targetIdx + 1, 0, ...splited.filter((_, idx) => idx >= 1))
         chapterLines[targetIdx] = splited[0];
-
-        console.log(chapterLines)
     }
     function eventPreivewKeyDown(e: KeyboardEvent) {
         const target = e.target! as HTMLElement;
@@ -108,13 +106,11 @@
             case 'Backspace':
                 if (target.textContent?.length == 0) {
                     e.preventDefault()
-                    console.log(['len = 0', targetIdx])
                     chapterLines.splice(targetIdx, 1)
                     return;
                 }
 
                 if (cur?.anchorOffset == 0) {
-                    console.log('anchor')
                     if (targetIdx == 0) { return }
                     e.preventDefault()
 
@@ -135,7 +131,6 @@
                 const parentElement = range.commonAncestorContainer.parentNode;
 
                 if (parentElement !== target) {
-                    console.warn("Nested contenteditable splitting not supported.");
                     return;
                 }
 
@@ -155,24 +150,32 @@
     function eventFormSubmit(e: SubmitEvent) {
         e.preventDefault();
 
-        const postObj = {
-            name: chapterName,
-            lines: chapterLines,
-            info: chapterInfo
+        
+        function escapeString(str: string): string {
+            return str.replace(/[\u0000-\u001F\u007F-\u009F]/g, char => {
+                return "\\u" + char.charCodeAt(0).toString(16).padStart(4, "0");
+            });
         }
-        fetch(`/api/${title.id}}/`, {
+
+        const postObj = {
+            name: escapeString(chapterName),
+            lines: chapterLines.map(escapeString),
+            info: escapeString(chapterInfo)
+        }
+
+        fetch(`http://localhost:8080/api/${title.id}/`, {
             body: JSON.stringify(postObj),
             method: 'POST',
             headers: {
-                "Content-Type": "application/json",
+                "Content-Type": "application/json; charset=UTF-8",
             },
         }).then(resp => {
             if (resp.ok) {
                 alert('저장 되었습니다');
                 return redirect(301, `/${title.id}/`);
+            } else {
+                alert('저장 실패');
             }
-        }).catch(e => {
-            alert('저장 실패');
         })
     }
 
