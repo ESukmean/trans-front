@@ -11,6 +11,7 @@ interface ConfigType {
   viewWide: boolean;
   viewFontSize: number;
   viewLineHeight: number;
+  viewLineMargin: number;
   viewFontFamily: string;
 }
 
@@ -27,6 +28,7 @@ function configRead(): ConfigType {
     viewWide: false,
     viewFontSize: 18,
     viewLineHeight: 1.4,
+    viewLineMargin: 8,
     viewFontFamily: 'KoPub Dotum Medium'
   };
 

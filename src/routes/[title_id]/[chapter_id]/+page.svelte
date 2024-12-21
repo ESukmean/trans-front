@@ -214,6 +214,7 @@
     style:line-height={config.viewLineHeight}
     style:font-size={config.viewFontSize + "px"}
     style:--line-height={config.viewLineHeight + "rem"}
+    style:--line-margin={config.viewLineMargin + "px"}
     style:--font-family={config.viewFontFamily}
     style:--font-weight={fontWeightEmulated}
 >   
@@ -255,6 +256,7 @@
         min-height: var(--line-height);
         font-family: var(--font-family);
         font-weight: var(--font-weight);
+        padding-bottom: var(--line-margin);
     }
     :global(.line-indicator) {
         background: greenyellow;
