@@ -86,7 +86,7 @@
                     </form>
                 </div>
                 <div class="p-2 border rounded">
-                    <label class="text-xl font-bold py-2 block">🛠️ 뷰어 기본설정 <input type="checkbox" class="invisible" bind:checked="{hideViewerConfig}"></label>
+                    <label class="text-xl font-bold py-2 block">🛠️ 뷰어 기본설정 <input type="checkbox" class="invisible" bind:checked="{hideViewerConfig}"><span style="width: 1px; height: 1px; overflow: hidden; display:inline-block" style:font-family={sampleFontFamily} style:font-weight={sampleFontWeight}>font preloader</span></label>
                     <div class="mt-4 flex flex-wrap lg:flex-none {hideViewerConfig ? 'hidden' : 'block'}">
                         <div class="flex-1 min-w-36">
                             <div class="font-bold">표시 문장 설정</div>
@@ -104,7 +104,7 @@
                                 <label class="block"><input type="checkbox" bind:checked={reader_config.scrollInfiniteChapter}/> 다음 챕터 이어보기</label> -->
                             </div>
                         </div>
-                        <div class="flex-1 min-w-56" style:font-family={sampleFontFamily} style:font-weight={sampleFontWeight}>
+                        <div class="flex-1 min-w-56">
                             <div class="font-bold">보기</div>
                             <div class="p-2">
                                 <label class="block"><input type="checkbox" bind:checked={reader_config.viewWide}/> 와이드로 보기</label>
