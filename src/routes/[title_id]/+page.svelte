@@ -111,7 +111,7 @@
                                 <label class="block">폰트 크기 (px): <input class="w-20" type="number" min=1 max=128 step=0.1 bind:value={reader_config.viewFontSize}/> </label>
                                 <label class="block">줄간 여백 (px): <input class="w-20" type="number" min=1 max=128 step=0.1 bind:value={reader_config.viewLineMargin}/> </label>
                                 <label class="block">줄 간격 (rem): <input class="w-20" type="number" min=0.1 max=30 step=0.01  bind:value={reader_config.viewLineHeight}/> </label>
-                                <select bind:value={reader_config.viewFontFamily} class="mt-1 p-1 block">
+                                <select bind:value={reader_config.viewFontFamily} class="mt-1 p-1 block" style:font-family={sampleFontFamily} style:font-weight={sampleFontWeight}>
                                     <optgroup label="돋움체 (고딕, Sans)">
                                         <option value="KoPub Dotum Light">폰트: KoPub 돋음 · 가늘게</option>
                                         <option value="KoPub Dotum Medium">폰트: KoPub 돋음 · 보통</option>

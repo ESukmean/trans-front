@@ -226,7 +226,7 @@
     {#each lineShow as [lineIdx, lineGroup]}
         <div data-line-no={lineIdx}>
             {#each lineGroup as line}
-                <span class={`trans-line-type-${line.id.type}`} data-line-type={line.id.type}>{line.line}</span>
+                <span class={`block trans-line-type-${line.id.type}`} data-line-type={line.id.type}>{line.line}</span>
             {/each}
         </div>
     {/each}
