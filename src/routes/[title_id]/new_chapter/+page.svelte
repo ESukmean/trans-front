@@ -163,7 +163,7 @@
             info: escapeString(chapterInfo)
         }
 
-        fetch(`http://localhost:8080/api/${title.id}/`, {
+        fetch(`/api/${title.id}/`, {
             body: JSON.stringify(postObj),
             method: 'POST',
             headers: {

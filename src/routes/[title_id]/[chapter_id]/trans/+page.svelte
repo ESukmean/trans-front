@@ -17,27 +17,6 @@
     })
     const linesOrignalSorted = Object.entries(linesOrignal).toSorted((a, b) => parseInt(a[0]) - parseInt(b[0])).map(([_, v]) => v)
 
-    interface SnapshotData {
-        chapterLineSnapshot: String;
-        chapterLinesSnapshot: string[];
-    }
-
-    export const snapshot: Snapshot<SnapshotData> = {
-        capture: () => {
-            return {
-                chapterLineSnapshot: chapterLine,
-                chapterLinesSnapshot: chapterLines,
-            };
-        },
-        restore: ({
-            chapterLineSnapshot,
-            chapterLinesSnapshot,
-        }) => {
-            chapterLineSnapshot = chapterLineSnapshot;
-            chapterLinesSnapshot = chapterLinesSnapshot;
-        },
-    };
-
     function splitLine(line: string): string[] {
         const trimed = line.replace("\r", "");
         let splited = trimed.split("\n");
@@ -77,7 +56,34 @@
     }
 
     function doAutoTrans() {
-        
+        function mappingChapterLineWithOriginal() {
+            let data: {[key: number]: string} = {}
+
+            chapterLines.forEach((v, i) => {
+                data[linesOrignalSorted[i].id.lineNo] = v
+            });
+
+            return data
+        }
+
+        const postObj = {
+            info: chapterInfo,
+            transModelNo: parseInt(transType)
+        }
+
+        fetch(`/api/${title.id}/${chapter.id}/trans`, {
+            body: JSON.stringify(postObj),
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json; charset=UTF-8",
+            },
+        }).then(resp => {
+            if (resp.ok) {
+                alert('저장 되었습니다');
+            } else {
+                alert('저장 실패');
+            }
+        })
     }
     function eventPreviewInput(e: InputEvent) {
         if (e.inputType != "insertFromPaste") {
@@ -108,7 +114,7 @@
                     chapterLines.splice(targetIdx, 1)
                     return;
                 }
-
+                
                 if (curStart != curEnd ) {
                     return;
                 }
@@ -154,8 +160,11 @@
         function mappingChapterLineWithOriginal() {
             let data: {[key: number]: string} = {}
 
-            chapterLines.forEach((v, i) => {
-                data[linesOrignalSorted[i].id.lineNo] = v
+            translatedLine.forEach((v, i) => {
+                // 번역 데이터가 들어오기 전에 저장을 누르면 undefined가 들어올 수 있음.
+                const lineStr = v ? v : '';
+
+                data[linesOrignalSorted[i].id.lineNo] = lineStr
             });
 
             return data
@@ -167,7 +176,7 @@
             transType: transType
         }
 
-        fetch(`http://localhost:8080/api/${title.id}/${chapter.id}/`, {
+        fetch(`/api/${title.id}/${chapter.id}/`, {
             body: JSON.stringify(postObj),
             method: 'POST',
             headers: {
@@ -176,20 +185,41 @@
         }).then(resp => {
             if (resp.ok) {
                 alert('저장 되었습니다');
-                return redirect(301, `/${title.id}/`);
             } else {
                 alert('저장 실패');
             }
         })
     }
 
+    function loadTranslatedLine(transType: string) {
+        const transTypeInt = parseInt(transType)
+
+        fetch(`/api/${title.id}/${chapter.id}/`, {
+            headers: {
+                "Content-Type": "application/json; charset=UTF-8",
+            },
+        }).then(resp => {
+            if (resp.ok) {
+                return resp.json() as Promise<TransLine[]>
+            } else {
+                alert('로딩 실패');
+            }
+        }).then(json => {
+            const data = json!!.filter(v => v.id.type == transTypeInt).toSorted((a, b) => a.id.lineNo - b.id.lineNo).map(v => v.line)
+            
+            translatedLine = data
+        })
+    }
+
     let transType = $state('1');
-    let chapterLine = $state("");
     let chapterLines: string[] = $state(linesOrignalSorted.map(v => v.line));
+    let translatedLine: string[] = $state([])
     let chapterInfo = $state("");
 
+    $effect(() => {
+        loadTranslatedLine(transType);
+    })
 
-    let removeTailingLine: boolean | null = $state(null);
 </script>
 
 
@@ -203,7 +233,7 @@
                         <span class="block text-xl font-bold py-2 block mb-4"
                             >🛠️ 자동 번역</span
                         >
-                        <select class="block font-bold text p-2 py-1 w-full">
+                        <select class="block font-bold text p-2 py-1 w-full" bind:value={transType}>
                             <option value="1">번역: ChatGPT</option>
                             <option value="2">번역: Claude</option>
                         </select>
@@ -243,19 +273,22 @@
                 </div> 
                 <div>
                     <div class="border min-h-20 rounded">
-                        {#each linesOrignalSorted.map((v, i) => [v, chapterLines[i] ?? '', i]) as line}
+                        {#each linesOrignalSorted as v, i}
+                            {@const isOriginalLineEmpty = v.line.trim().length == 0}
+                            {@const translationLine = (i < translatedLine.length) ? translatedLine[i] : ""}
+                            {@const isTranslationLineEmpty = !translationLine || translationLine.trim().length == 0}
                             <div class="flex bg-slate-100 m-2">
-                                <div class="p-2 min-h-10 flex-1 w-2/4 {(line[0].line.trim().length == 0) ? 'bg-amber-100' : 'bg-violet-100'}" data-idx={line[0].id.lineNo}>
-                                    {line[0].line}
+                                <div class="p-2 min-h-10 flex-1 w-2/4 {isOriginalLineEmpty ? 'bg-amber-100' : 'bg-violet-100'}" data-idx={v.id.lineNo}>
+                                    {v.line}
                                 </div>
                                 <textarea
                                     contenteditable="true"
-                                    class="p-2 min-h-10 flex-1 w-2/4 {(line[0].line.trim().length == 0 && line[1].trim().length > 0 || line[0].line.trim().length > 0 && line[1].trim().length == 0) ? 'bg-rose-100' : 'bg-violet-100'}"
-                                    data-idx={line[2]}
-                                    data-match-idx={line[0].id.lineNo}
+                                    class="p-2 min-h-10 flex-1 w-2/4 {isOriginalLineEmpty != isTranslationLineEmpty ? 'bg-rose-100' : 'bg-violet-100'}"
+                                    data-idx={i}
+                                    data-match-idx={v.id.lineNo}
                                     onkeydown={eventPreivewKeyDown}
                                     oninput={eventPreviewInput}
-                                    bind:value={chapterLines[line[2]]}
+                                    bind:value={translatedLine[i]}
                                 >
                                 </textarea>
                             </div>
