@@ -10,6 +10,13 @@
     const { data } = $props();
     const chapter = data.article;
     const title = data.title;
+    let chapterDetail: { common: string, [key: string]: string};
+    try {
+        const json = JSON.parse(chapter.detail);
+        chapterDetail = json
+    } catch {
+        chapterDetail = {common: chapter.detail};
+    }
 
     let linesOrignal: {[key: string]: TransLine} = {}
     data.list.forEach(([k, v]) => {
@@ -25,28 +32,6 @@
     }
     function splitPostProcess(line: string[]): string[] {
         let splited = line;
-        if (removeTailingLine) {
-            let result = [];
-
-            let wasFilledLine = true;
-            for (const line of splited) {
-                const isEmptyLine = line.trim().length == 0;
-
-                if (isEmptyLine && wasFilledLine) {
-                    wasFilledLine = false;
-                    continue;
-                }
-
-                result.push(line);
-
-                if (!isEmptyLine) {
-                    wasFilledLine = true;
-                }
-            }
-
-            splited = result;
-        }
-
         return splited;
     }
 
@@ -209,12 +194,16 @@
             
             translatedLine = data
         })
+        
+        const transSpecificInfo = transType in chapterDetail ? chapterDetail[transType] : "";
+        chapterInfo = `${chapterDetail.common}\n\n${transSpecificInfo}`
     }
 
     let transType = $state('1');
     let chapterLines: string[] = $state(linesOrignalSorted.map(v => v.line));
     let translatedLine: string[] = $state([])
-    let chapterInfo = $state("");
+    let chapterInfo = $state(chapterDetail.common);
+    
 
     $effect(() => {
         loadTranslatedLine(transType);
