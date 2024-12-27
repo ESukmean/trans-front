@@ -24,7 +24,7 @@ export function load({ data }) {
   original_list.forEach((v) => listObj[v.id] = v)
   const seen_list: (recentSeenItemType | undefined)[]  = Object.values(listSeenHistory()).map(v => {
     if (!v) return undefined
-    
+
     const target = listObj[v.titleNo]
     if (!target) return undefined
 
