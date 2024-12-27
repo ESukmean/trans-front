@@ -7,9 +7,16 @@ interface TitleWithChapterDto {
   chapterId: number | null; // Corresponds to Kotlin's Int? (nullable)
   latestChapter: string | null; // Corresponds to Kotlin's String? (nullable)
 }
+interface AriticleChapter {
+  id: number,
+  title: string,
+  chapter_id: number,
+  latest_chapter: string,
+  modified: string
+}
 
-
-export async function load(event) {
+export type { TitleWithChapterDto, AriticleChapter }
+export async function load(event): Promise<{ list: AriticleChapter[]}> {
   const list: [TitleWithChapterDto] = await fetch(`${API_ADDRESS}/api/`).then(res => res.json());
 
   return {

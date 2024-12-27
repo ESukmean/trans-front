@@ -11,8 +11,8 @@ interface TransArticle {
 }
 interface TransTitle {
   id: number;
-  title: String;
-  lastModify: String;
+  title: string;
+  lastModify: string;
 }
 interface TransLineId {
     articleNo: number; // Corresponds to "articleNo" in the "id" field

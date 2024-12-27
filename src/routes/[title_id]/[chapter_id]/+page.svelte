@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { TransLine } from './+page.server.js';
-
+    import { updateSeenHistory } from '$lib/recentSeen';
+    
     const { data } = $props();
     const lines = data.line;
     const title = data.title;
@@ -190,22 +191,23 @@
         return weightTable['Regular'];
     }
 
-    function loadHeaderMessage(detail: string) :string {
-        try {
-            const header = JSON.parse(detail)
-            let msgConact = header['common']
+    // function loadHeaderMessage(detail: string) :string {
+    //     try {
+    //         const header = JSON.parse(detail)
+    //         let msgConact = header['common']
     
-            showLineType.forEach((v) => {
-                msgConact = msgConact + header[`trans-${v}`]
-            })
+    //         showLineType.forEach((v) => {
+    //             msgConact = msgConact + header[`trans-${v}`]
+    //         })
     
-            return msgConact
-        } catch {
-            return article.detail
-        }
-    }
+    //         return msgConact
+    //     } catch {
+    //         return article.detail
+    //     }
+    // }
     const fontWeightEmulated = fontWeightEmulate(config.viewFontFamily);
-    // let headerMessage = $state(loadHeaderMessage(article.detail))
+    
+    updateSeenHistory(title.title, title.id, article.id)
 
 </script>
 <svelte:head>
