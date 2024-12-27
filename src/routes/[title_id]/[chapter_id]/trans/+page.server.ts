@@ -1,5 +1,6 @@
 import { error } from "@sveltejs/kit";
 import { isNumeric } from "$lib/validation.js";
+import { API_ADDRESS } from '$lib/ApiConfig.js'
 
 interface TransLine {
     id: TransLineId; // Nested object for "id"
@@ -32,9 +33,9 @@ export async function load({params}) {
   }
 
   
-  const title: TransTitle = await fetch(`http://trans-back.kr-2-ts.esukmean.com/api/${titleId}`).then(res => res.json());
-  const article: TransArticle = await fetch(`http://trans-back.kr-2-ts.esukmean.com/api/${titleId}/${chapterId}`).then(res => res.json());
-  const line: TransLine[] = await fetch(`http://trans-back.kr-2-ts.esukmean.com/api/${titleId}/${chapterId}/`).then(res => res.json());
+  const title: TransTitle = await fetch(`${API_ADDRESS}/api/${titleId}`).then(res => res.json());
+  const article: TransArticle = await fetch(`${API_ADDRESS}/api/${titleId}/${chapterId}`).then(res => res.json());
+  const line: TransLine[] = await fetch(`${API_ADDRESS}/api/${titleId}/${chapterId}/`).then(res => res.json());
 
   let lineAggreated: {[key: number]: {[type: number]: TransLine}} = {}
   line.forEach((v) => {

@@ -3,7 +3,7 @@
     import Frame from "$lib/Frame.svelte";
     import { redirect, type Snapshot } from "@sveltejs/kit";
     import type { TransLine } from "../+page.server";
-
+    import { API_ADDRESS } from '$lib/ApiConfig.js'
 
     beforeNavigate((nav) => chapterLines.length > 0 ? nav.cancel() : {})
 
@@ -56,7 +56,7 @@
             transModelNo: parseInt(transType)
         }
 
-        fetch(`/api/${title.id}/${chapter.id}/trans`, {
+        fetch(`${API_ADDRESS}/api/${title.id}/${chapter.id}/trans`, {
             body: JSON.stringify(postObj),
             method: 'POST',
             headers: {
@@ -161,7 +161,7 @@
             transType: transType
         }
 
-        fetch(`/api/${title.id}/${chapter.id}/`, {
+        fetch(`${API_ADDRESS}/api/${title.id}/${chapter.id}/`, {
             body: JSON.stringify(postObj),
             method: 'POST',
             headers: {
@@ -179,7 +179,7 @@
     function loadTranslatedLine(transType: string) {
         const transTypeInt = parseInt(transType)
 
-        fetch(`/api/${title.id}/${chapter.id}/`, {
+        fetch(`${API_ADDRESS}/api/${title.id}/${chapter.id}/`, {
             headers: {
                 "Content-Type": "application/json; charset=UTF-8",
             },

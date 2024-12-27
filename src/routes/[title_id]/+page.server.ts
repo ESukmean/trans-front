@@ -1,5 +1,6 @@
 import { error } from "@sveltejs/kit";
 import { isNumeric } from "$lib/validation.js";
+import { API_ADDRESS } from '$lib/ApiConfig.js'
 
 interface TransArticle {
   id: number;
@@ -22,8 +23,8 @@ export async function load({params}) {
   }
 
   
-  const title: TransTitle = await fetch(`http://trans-back.kr-2-ts.esukmean.com/api/${titleId}`).then(res => res.json());
-  const list: [TransArticle] = await fetch(`http://trans-back.kr-2-ts.esukmean.com/api/${titleId}/`).then(res => res.json());
+  const title: TransTitle = await fetch(`${API_ADDRESS}/api/${titleId}`).then(res => res.json());
+  const list: [TransArticle] = await fetch(`${API_ADDRESS}/api/${titleId}/`).then(res => res.json());
   return {
     title: title,
     list: list.map(

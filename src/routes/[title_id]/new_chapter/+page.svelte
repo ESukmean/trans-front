@@ -2,6 +2,7 @@
     import { beforeNavigate } from "$app/navigation";
     import Frame from "$lib/Frame.svelte";
     import { redirect, type Snapshot } from "@sveltejs/kit";
+    import { API_ADDRESS } from '$lib/ApiConfig.js'
 
 
     beforeNavigate((nav) => chapterName.length + chapterLine.length > 0 ? nav.cancel() : {})
@@ -163,7 +164,7 @@
             info: escapeString(chapterInfo)
         }
 
-        fetch(`/api/${title.id}/`, {
+        fetch(`${API_ADDRESS}/api/${title.id}/`, {
             body: JSON.stringify(postObj),
             method: 'POST',
             headers: {

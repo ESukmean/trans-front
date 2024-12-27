@@ -205,10 +205,12 @@
         }
     }
     const fontWeightEmulated = fontWeightEmulate(config.viewFontFamily);
-    let headerMessage = $state(loadHeaderMessage(article.detail))
+    // let headerMessage = $state(loadHeaderMessage(article.detail))
 
 </script>
-
+<svelte:head>
+	<title>{article.chapterTitle} ({title.title}) - GPTTrans</title>
+</svelte:head>
 <article
     class="mx-auto p-4 {!config.viewWide ? 'container' : ''}"
     style:line-height={config.viewLineHeight}

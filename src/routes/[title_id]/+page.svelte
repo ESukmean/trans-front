@@ -66,6 +66,9 @@
     let sampleFontFamily = $derived(reader_config.viewFontFamily)
     let sampleFontWeight = $derived(fontWeightEmulate(reader_config.viewFontFamily))
 </script>
+<svelte:head>
+	<title>{title.title} - GPTTrans</title>
+</svelte:head>
 <Frame>
 	<div class="container mx-auto p-2 py-6">
         <header class="text-2xl font-bold py-2 mb-6">{title.title}</header>

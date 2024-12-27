@@ -1,3 +1,5 @@
+import { API_ADDRESS } from '$lib/ApiConfig.js'
+
 interface TitleWithChapterDto {
   titleId: number; // Corresponds to Kotlin's Int? (nullable)
   titleName: string; // Corresponds to Kotlin's String? (nullable)
@@ -8,7 +10,7 @@ interface TitleWithChapterDto {
 
 
 export async function load(event) {
-  const list: [TitleWithChapterDto] = await fetch('http://trans-back.kr-2-ts.esukmean.com/api/').then(res => res.json());
+  const list: [TitleWithChapterDto] = await fetch(`${API_ADDRESS}/api/`).then(res => res.json());
 
   return {
     list: list.map(
