@@ -23,6 +23,7 @@ interface TransTitle {
   id: number;
   title: String;
   lastModify: String;
+  transInfo: String;
 }
 
 export async function load({params}) {
@@ -46,7 +47,6 @@ export async function load({params}) {
     lineAggreated[v.id.lineNo][v.id.type] = v
   })
   const lineOrderd: [string, {[key: number]: TransLine}][] = Object.entries(lineAggreated).toSorted((a, b) => parseInt(a[0]) - parseInt(b[0]))
-  
   return {
     title: title,
     chapter: article,

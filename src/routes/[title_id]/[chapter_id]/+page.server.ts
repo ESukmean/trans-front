@@ -8,6 +8,7 @@ interface TransArticle {
   lastModify: string;
   detail: string;
   titleNo: number;
+  header: string;
 }
 interface TransTitle {
   id: number;

@@ -224,6 +224,10 @@
 >   
     <header class="bg-slate-100 p-2 border border-slate-400 rounded mb-8" >
         <h1 class="pb-2 block font-bold">{title.title}<br><small class="text-slate-600 font-normal">{article.chapterTitle}</small></h1>
+        {#if article.header.trim().length > 0}
+            <hr />
+            <pre>{article.header}</pre>
+        {/if}
     </header>
     {#each lineShow as [lineIdx, lineGroup]}
         <div data-line-no={lineIdx}>

@@ -3,7 +3,7 @@
     import Frame from "$lib/Frame.svelte";
     import { redirect, type Snapshot } from "@sveltejs/kit";
     import type { TransLine } from "../+page.server";
-    import { API_ADDRESS } from '$lib/ApiConfig.js'
+    import { API_ADDRESS, API_ADDRESS_DIRECT } from '$lib/ApiConfig.js'
 
     beforeNavigate((nav) => chapterLines.length > 0 ? nav.cancel() : {})
 
@@ -56,7 +56,7 @@
             transModelNo: parseInt(transType)
         }
 
-        fetch(`${API_ADDRESS}/api/${title.id}/${chapter.id}/trans`, {
+        fetch(`${API_ADDRESS_DIRECT}/api/${title.id}/${chapter.id}/trans`, {
             body: JSON.stringify(postObj),
             method: 'POST',
             headers: {
@@ -158,10 +158,11 @@
         const postObj = {
             lines: mappingChapterLineWithOriginal(),
             info: escapeString(chapterInfo),
-            transType: transType
+            transType: transType,
+            title: chapterTitle
         }
 
-        fetch(`${API_ADDRESS}/api/${title.id}/${chapter.id}/`, {
+        fetch(`${API_ADDRESS_DIRECT}/api/${title.id}/${chapter.id}/`, {
             body: JSON.stringify(postObj),
             method: 'POST',
             headers: {
@@ -179,7 +180,7 @@
     function loadTranslatedLine(transType: string) {
         const transTypeInt = parseInt(transType)
 
-        fetch(`${API_ADDRESS}/api/${title.id}/${chapter.id}/`, {
+        fetch(`${API_ADDRESS_DIRECT}/api/${title.id}/${chapter.id}/`, {
             headers: {
                 "Content-Type": "application/json; charset=UTF-8",
             },
@@ -196,14 +197,14 @@
         })
         
         const transSpecificInfo = transType in chapterDetail ? chapterDetail[transType] : "";
-        chapterInfo = `${chapterDetail.common}\n\n${transSpecificInfo}`
+        chapterInfo = `${title.transInfo}\n${chapterDetail.common}\n\n${transSpecificInfo}`
     }
 
     let transType = $state('1');
     let chapterLines: string[] = $state(linesOrignalSorted.map(v => v.line));
     let translatedLine: string[] = $state([])
-    let chapterInfo = $state(chapterDetail.common);
-    
+    let chapterInfo = $state(title.transInfo + chapterDetail.common);
+    let chapterTitle = $state(chapter.chapterTitle);
 
     $effect(() => {
         loadTranslatedLine(transType);
@@ -214,7 +215,21 @@
 
 <Frame>
     <form class="mx-auto px-12 py-6" method="post" onsubmit="{eventFormSubmit}">
-        <header class="text-2xl font-bold py-2 mb-6">{title.title}<small class="block text-slate-500">{chapter.id} - {chapter.chapterTitle}</small></header>
+        <header class="text-2xl font-bold py-2 mb-6">
+            <div>{title.title}</div>
+            <label
+            class="rounded border-2 border-sky-400 p-2 block flex text-lg text-slate-400 has-[:invalid]:border-rose-400 has-[:invalid]:border-2 block"
+        >
+            챕터명:
+            <input
+                type="text"
+                name="chapterName"
+                class="flex-1 ml-2 text-slate-800 font-bold"
+                required
+                bind:value={chapterTitle}
+            />
+        </label>
+        </header>
         <div class="lg:flex gap-4">
             <div class="w-full lg:w-80 lg:h-full flex flex-col gap-2 mb-4">
                 <div class="flex-1">

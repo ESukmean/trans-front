@@ -2,7 +2,7 @@
     import { beforeNavigate } from "$app/navigation";
     import Frame from "$lib/Frame.svelte";
     import { redirect, type Snapshot } from "@sveltejs/kit";
-    import { API_ADDRESS } from '$lib/ApiConfig.js'
+    import { API_ADDRESS, API_ADDRESS_DIRECT } from '$lib/ApiConfig.js'
 
 
     beforeNavigate((nav) => chapterName.length + chapterLine.length > 0 ? nav.cancel() : {})
@@ -161,10 +161,11 @@
         const postObj = {
             name: escapeString(chapterName),
             lines: chapterLines.map(escapeString),
-            info: escapeString(chapterInfo)
+            info: escapeString(chapterInfo),
+            header: header
         }
 
-        fetch(`${API_ADDRESS}/api/${title.id}/`, {
+        fetch(`${API_ADDRESS_DIRECT}/api/${title.id}/`, {
             body: JSON.stringify(postObj),
             method: 'POST',
             headers: {
@@ -184,6 +185,7 @@
     let chapterLine = $state("");
     let chapterLines: string[] = $state([]);
     let chapterInfo = $state("");
+    let header = $state('');
 
     let removeTailingLine: boolean | null = $state(null);
 </script>
@@ -230,17 +232,23 @@
                         </div>
                     </div>
                 </div>
-                <div class="p-2 border rounded">
-                    <span class="block text-xl font-bold py-2 block mb-4"
-                        >📄 번역 메모 (GPT 전달됨)</span
-                    >
-                    <textarea bind:value={chapterInfo} class="w-full h-40 border rounded" placeholder="GPT가 번역할 때 사용할 추가정보를 입력해 주세요 (영어 권장)"></textarea>
-                </div>
                 <div class="flex-1 mt-4">
                     <button
                         class="block rounded border border-rose-200 bg-orange-500/80 hover:bg-orange-700 p-2 text-center text-white w-full"
                         >저장</button
                     >
+                </div>
+                <div class="p-2 border rounded">
+                    <span class="block text-xl font-bold py-2 block mb-4"
+                        >📄 헤더</span
+                    >
+                    <textarea bind:value={header} class="w-full h-40 border rounded" placeholder="페이지 상단에 표시됩니다."></textarea>
+                </div>
+                <div class="p-2 border rounded">
+                    <span class="block text-xl font-bold py-2 block mb-4"
+                        >📄 번역 메모 (GPT 전달됨)</span
+                    >
+                    <textarea bind:value={chapterInfo} class="w-full h-40 border rounded" placeholder="GPT가 번역할 때 사용할 추가정보를 입력해 주세요 (영어 권장)"></textarea>
                 </div>
             </div>
             <div class="lg:flex-1 lg:h-full">
