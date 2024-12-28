@@ -1,61 +1,61 @@
 <script lang="ts">
-    import type { TransLine } from './+page.server.js';
-    import { updateSeenHistory } from '$lib/recentSeen';
-    
+    import type { TransLine } from "./+page.server.js";
+    import { updateSeenHistory } from "$lib/recentSeen";
+
     const { data } = $props();
     const lines = data.line;
     const title = data.title;
     const article = data.article;
+    const navi = data.navigation;
 
     const config = data.config;
-    let lineShow: [string, TransLine[]][] = $state([])
-    let showLineType = $state.raw(['1'])
+    let lineShow: [string, TransLine[]][] = $state([]);
+    let showLineType = $state.raw(["1"]);
 
     const resultSet = {
         0: config.showJapanese,
         1: config.showGPT,
-        2: config.showClaude
-    }
+        2: config.showClaude,
+    };
 
-    let tmp = []
+    let tmp = [];
     for (const [k, v] of Object.entries(resultSet)) {
-        if (v) tmp.push(k)
+        if (v) tmp.push(k);
     }
 
     if (tmp.length == 0) {
-        tmp = ['1']
+        tmp = ["1"];
     }
 
-    showLineType = tmp
+    showLineType = tmp;
 
-    let lineAggregate: {[k: string]: TransLine[]} = {}
+    let lineAggregate: { [k: string]: TransLine[] } = {};
     lines.forEach((v, _) => {
-        let tmp: {[type: string]: TransLine} = {}
-        
-        const lineKey = v[0]
-        const lineEntry = Object.entries(v[1])
+        let tmp: { [type: string]: TransLine } = {};
+
+        const lineKey = v[0];
+        const lineEntry = Object.entries(v[1]);
         lineEntry.forEach(([k, v]) => {
-            if (!showLineType.includes(k)) return
-            
-            tmp[k] = v
+            if (!showLineType.includes(k)) return;
+
+            tmp[k] = v;
         });
-        
 
-        if (Object.keys(tmp).length == 0 && v[1]['1'] != undefined) {
+        if (Object.keys(tmp).length == 0 && v[1]["1"] != undefined) {
             // failback (아무것도 없으면 GPT 번역을 표시)
-            tmp[showLineType[0]] = v[1]['1']
+            tmp[showLineType[0]] = v[1]["1"];
         }
-        
 
-        const aggregated = Object.entries(tmp).toSorted((a, b) => parseInt(a[0]) - parseInt(b[0])).map(([_, v]) => v)
-        lineAggregate[lineKey] = aggregated
-    })
-    
-    lineShow = Object.entries(lineAggregate).toSorted((a, b) => parseInt(a[0]) - parseInt(b[0]))
+        const aggregated = Object.entries(tmp)
+            .toSorted((a, b) => parseInt(a[0]) - parseInt(b[0]))
+            .map(([_, v]) => v);
+        lineAggregate[lineKey] = aggregated;
+    });
 
+    lineShow = Object.entries(lineAggregate).toSorted(
+        (a, b) => parseInt(a[0]) - parseInt(b[0]),
+    );
 
-
-    
     let lastScrollMethod = "D"; // U, D
     function getBottomElement(elements: NodeListOf<Element>, startIdx = 0) {
         const screenHeight = window.innerHeight;
@@ -96,7 +96,8 @@
         const targetIdx = getBottomElement(divs);
         const target = divs[targetIdx];
 
-        const scrollAmount = target.getBoundingClientRect().y - config.viewFontSize
+        const scrollAmount =
+            target.getBoundingClientRect().y - config.viewFontSize;
 
         if (targetIdx == 0 || scrollAmount <= 0) {
             const scrollAmount = window.innerHeight * 0.75;
@@ -105,9 +106,8 @@
             return;
         }
 
-        
         window.scrollBy({
-            top: scrollAmount
+            top: scrollAmount,
         });
 
         const prevIndicator =
@@ -140,7 +140,10 @@
         const targetIdx = getTopElement(divs);
         const target = divs[targetIdx];
 
-        const scrollAmount = target.getBoundingClientRect().bottom - screenHeight + config.viewFontSize
+        const scrollAmount =
+            target.getBoundingClientRect().bottom -
+            screenHeight +
+            config.viewFontSize;
 
         if (targetIdx == 0 || scrollAmount >= 0) {
             const scrollAmount = window.innerHeight * 0.75;
@@ -150,7 +153,7 @@
         }
 
         window.scrollBy({
-            top: scrollAmount
+            top: scrollAmount,
         });
 
         const prevIndicator =
@@ -178,40 +181,41 @@
 
     function fontWeightEmulate(fontName: string): number {
         const weightTable = {
-            'Light': 300,
-            'Regular': 400,
-            'Medium': 500,
-            'Bold': 500
+            Light: 300,
+            Regular: 400,
+            Medium: 500,
+            Bold: 500,
         };
 
         for (const [k, v] of Object.entries(weightTable)) {
             if (fontName.includes(k)) return v;
         }
 
-        return weightTable['Regular'];
+        return weightTable["Regular"];
     }
 
     // function loadHeaderMessage(detail: string) :string {
     //     try {
     //         const header = JSON.parse(detail)
     //         let msgConact = header['common']
-    
+
     //         showLineType.forEach((v) => {
     //             msgConact = msgConact + header[`trans-${v}`]
     //         })
-    
+
     //         return msgConact
     //     } catch {
     //         return article.detail
     //     }
     // }
     const fontWeightEmulated = fontWeightEmulate(config.viewFontFamily);
-    
-    updateSeenHistory(title.title, title.id, article.id)
 
+    updateSeenHistory(title.title, title.id, article.id);
+    console.log(navi);
 </script>
+
 <svelte:head>
-	<title>{article.chapterTitle} ({title.title}) - GPTTrans</title>
+    <title>{article.chapterTitle} ({title.title}) - GPTTrans</title>
 </svelte:head>
 <article
     class="mx-auto p-4 {!config.viewWide ? 'container' : ''}"
@@ -221,9 +225,13 @@
     style:--line-margin={config.viewLineMargin + "px"}
     style:--font-family={config.viewFontFamily}
     style:--font-weight={fontWeightEmulated}
->   
-    <header class="bg-slate-100 p-2 border border-slate-400 rounded mb-8" >
-        <h1 class="pb-2 block font-bold">{title.title}<br><small class="text-slate-600 font-normal">{article.chapterTitle}</small></h1>
+>
+    <header class="bg-slate-100 p-2 border border-slate-400 rounded mb-8">
+        <h1 class="pb-2 block font-bold">
+            {title.title}<br /><small class="text-slate-600 font-normal"
+                >{article.chapterTitle}</small
+            >
+        </h1>
         {#if article.header.trim().length > 0}
             <hr />
             <pre>{article.header}</pre>
@@ -232,11 +240,39 @@
     {#each lineShow as [lineIdx, lineGroup]}
         <div data-line-no={lineIdx}>
             {#each lineGroup as line}
-                <span class={`block trans-line-type-${line.id.type}`} data-line-type={line.id.type}>{line.line}</span>
+                <span
+                    class={`block trans-line-type-${line.id.type}`}
+                    data-line-type={line.id.type}>{line.line}</span
+                >
             {/each}
         </div>
     {/each}
-<div></div>
+    <nav class="flex flex-row gap-4 mt-4">
+        <a
+            class="flex-1 border-2 rounded p-2 text-left block"
+            href={navi.before ? `/${navi.before.titleNo}/${navi.before.id}/` : "#"}
+        >
+            <span class="text-base text-slate-600">이전 글</span>
+            {#if navi.before} 
+                <p>{navi.before.chapterTitle}</p>
+                <small class="text-slate-400">{navi.before.lastModify}</small>
+            {:else}
+                <span>없음</span>
+            {/if}
+        </a>
+        <a
+            class="flex-1 border-2 rounded p-2 text-right block"
+            href={navi.after ? `/${navi.after.titleNo}/${navi.after.id}/` : "#"}
+        >
+            <span class="text-base text-slate-600">다음 글</span>
+            {#if navi.after} 
+                <p>{navi.after.chapterTitle}</p>
+                <small class="text-slate-400">{navi.after.lastModify}</small>
+            {:else}
+                <span>없음</span>
+            {/if}
+        </a>
+    </nav>
 </article>
 <div
     class="{config.scrollShow

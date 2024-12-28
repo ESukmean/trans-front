@@ -5,6 +5,7 @@ export function load({ data, url }) {
       config: configRead(),
       line: data.line,
       article: data.chapter,
-      title: data.title
+      title: data.title,
+      navigation: data.navigation
   }
 }
