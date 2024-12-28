@@ -3,58 +3,58 @@
     import { updateSeenHistory } from "$lib/recentSeen";
 
     const { data } = $props();
-    const lines = data.line;
-    const title = data.title;
-    const article = data.article;
-    const navi = data.navigation;
+    const lines = $derived(data.line);
+    const title = $derived(data.title);
+    const article = $derived(data.article);
+    const navi = $derived(data.navigation);
 
     const config = data.config;
-    let lineShow: [string, TransLine[]][] = $state([]);
-    let showLineType = $state.raw(["1"]);
+    let showLineType = $derived.by(() => {
+        const resultSet = {
+            0: config.showJapanese,
+            1: config.showGPT,
+            2: config.showClaude,
+        };
 
-    const resultSet = {
-        0: config.showJapanese,
-        1: config.showGPT,
-        2: config.showClaude,
-    };
-
-    let tmp = [];
-    for (const [k, v] of Object.entries(resultSet)) {
-        if (v) tmp.push(k);
-    }
-
-    if (tmp.length == 0) {
-        tmp = ["1"];
-    }
-
-    showLineType = tmp;
-
-    let lineAggregate: { [k: string]: TransLine[] } = {};
-    lines.forEach((v, _) => {
-        let tmp: { [type: string]: TransLine } = {};
-
-        const lineKey = v[0];
-        const lineEntry = Object.entries(v[1]);
-        lineEntry.forEach(([k, v]) => {
-            if (!showLineType.includes(k)) return;
-
-            tmp[k] = v;
-        });
-
-        if (Object.keys(tmp).length == 0 && v[1]["1"] != undefined) {
-            // failback (아무것도 없으면 GPT 번역을 표시)
-            tmp[showLineType[0]] = v[1]["1"];
+        let tmp = [];
+        for (const [k, v] of Object.entries(resultSet)) {
+            if (v) tmp.push(k);
         }
 
-        const aggregated = Object.entries(tmp)
-            .toSorted((a, b) => parseInt(a[0]) - parseInt(b[0]))
-            .map(([_, v]) => v);
-        lineAggregate[lineKey] = aggregated;
-    });
+        if (tmp.length == 0) {
+            tmp = ["1"];
+        }
 
-    lineShow = Object.entries(lineAggregate).toSorted(
-        (a, b) => parseInt(a[0]) - parseInt(b[0]),
-    );
+        return tmp;
+    }) 
+    let lineShow: [string, TransLine[]][] = $derived.by(() => {
+        let lineAggregate: { [k: string]: TransLine[] } = {};
+        lines.forEach((v, _) => {
+            let tmp: { [type: string]: TransLine } = {};
+
+            const lineKey = v[0];
+            const lineEntry = Object.entries(v[1]);
+            lineEntry.forEach(([k, v]) => {
+                if (!showLineType.includes(k)) return;
+
+                tmp[k] = v;
+            });
+
+            if (Object.keys(tmp).length == 0 && v[1]["1"] != undefined) {
+                // failback (아무것도 없으면 GPT 번역을 표시)
+                tmp[showLineType[0]] = v[1]["1"];
+            }
+
+            const aggregated = Object.entries(tmp)
+                .toSorted((a, b) => parseInt(a[0]) - parseInt(b[0]))
+                .map(([_, v]) => v);
+            lineAggregate[lineKey] = aggregated;
+        });
+
+        return Object.entries(lineAggregate).toSorted(
+            (a, b) => parseInt(a[0]) - parseInt(b[0]),
+        );
+    });
 
     let lastScrollMethod = "D"; // U, D
     function getBottomElement(elements: NodeListOf<Element>, startIdx = 0) {
@@ -209,8 +209,6 @@
     //     }
     // }
     const fontWeightEmulated = fontWeightEmulate(config.viewFontFamily);
-
-    updateSeenHistory(title.title, title.id, article.id);
 </script>
 
 <svelte:head>
@@ -256,7 +254,7 @@
                 <p>{navi.before.chapterTitle}</p>
                 <small class="text-slate-400">{navi.before.lastModify}</small>
             {:else}
-                <span>없음</span>
+                <p>없음</p>
             {/if}
         </a>
         <a
@@ -268,7 +266,7 @@
                 <p>{navi.after.chapterTitle}</p>
                 <small class="text-slate-400">{navi.after.lastModify}</small>
             {:else}
-                <span>없음</span>
+                <p>없음</p>
             {/if}
         </a>
     </nav>
