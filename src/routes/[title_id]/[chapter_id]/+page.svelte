@@ -211,7 +211,6 @@
     const fontWeightEmulated = fontWeightEmulate(config.viewFontFamily);
 
     updateSeenHistory(title.title, title.id, article.id);
-    console.log(navi);
 </script>
 
 <svelte:head>
